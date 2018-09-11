@@ -1,0 +1,59 @@
+{
+  "index_patterns": "example",
+  "order": 0,
+  "settings": {
+    "index": {
+      "analysis": {
+        "analyzer": {
+          "ja_analyzer": {
+            "type": "custom",
+            "tokenizer": "ja_tokenizer"
+          }
+        },
+        "tokenizer": {
+          "ja_tokenizer": {
+            "mode": "search",
+            "type": "reloadable_kuromoji",
+            "user_dict": "user_dict.csv"
+          }
+        }
+      }
+    }
+  },
+  "mappings": {
+    "_default_": {
+      "dynamic_templates": [
+        {
+          "string_fields": {
+            "match_mapping_type": "string",
+            "mapping": {
+              "type": "text",
+              "fields": {
+                "analyzed": {
+                  "type": "text",
+                  "fielddata": true,
+                  "store": true,
+                  "analyzer": "ja_analyzer",
+                  "search_analyzer": "ja_analyzer"
+                },
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                },
+                "full": {
+                  "type": "text"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "properties": {
+        "execDate": {
+          "type": "date",
+          "format": "yyyy/MM/dd'T'HH:mm:ssZ"
+        }
+      }
+    }
+  }
+}
